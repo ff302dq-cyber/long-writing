@@ -1,0 +1,8 @@
+name: astrbot_plugin_long_writer
+display_name: 长文写作助手
+desc: 使用独立写作模型生成文章，支持 wr+字数 指令、续写缓存和群聊合并转发输出。
+author: 菌菌
+version: 2.0.0
+repo: "https://github.com/ff302dq-cyber/long-writing"
+support_platforms:
+  - aiocqhttp

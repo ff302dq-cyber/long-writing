@@ -1,0 +1,39 @@
+{
+  "writer_provider_id": {
+    "description": "长文写作模型提供商",
+    "type": "string",
+    "hint": "请选择写作专用的模型提供商，例如你单独配置的贵模型。",
+    "default": "",
+    "_special": "select_provider"
+  },
+  "writer_system_prompt": {
+    "description": "追加写作提示词",
+    "type": "text",
+    "hint": "可选。默认只使用当前会话人设卡；这里填写的内容会追加到人设卡后面。",
+    "default": ""
+  },
+  "min_words": {
+    "description": "允许请求的最小字数",
+    "type": "int",
+    "hint": "用户输入的字数低于这个值时，会按这个值处理。",
+    "default": 50
+  },
+  "max_words": {
+    "description": "允许请求的最大字数",
+    "type": "int",
+    "hint": "用户输入的字数高于这个值时，会按这个值处理。设为 0 表示不限制。",
+    "default": 5000
+  },
+  "always_forward_in_group": {
+    "description": "群聊始终使用合并转发",
+    "type": "bool",
+    "hint": "开启后，/wr 生成的文章在群聊里无论字数多少都会用折叠转发形式发送。",
+    "default": true
+  },
+  "forward_node_name": {
+    "description": "合并转发节点名称",
+    "type": "string",
+    "hint": "群聊合并转发消息里显示的发送者名称。",
+    "default": "长文写作助手"
+  }
+}
