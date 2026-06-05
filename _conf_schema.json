@@ -22,7 +22,7 @@
     "description": "允许请求的最大字数",
     "type": "int",
     "hint": "用户输入的字数高于这个值时，会按这个值处理。设为 0 表示不限制。",
-    "default": 5000
+    "default": 3000
   },
   "always_forward_in_group": {
     "description": "群聊始终使用合并转发",
