@@ -53,4 +53,3 @@
 | `min_words` | 允许请求的最小字数 |
 | `max_words` | 允许请求的最大字数 |
 | `always_forward_in_group` | 群聊中是否始终合并转发 |
-| `forward_node_name` | 合并转发节点名称 |

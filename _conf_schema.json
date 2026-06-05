@@ -29,11 +29,5 @@
     "type": "bool",
     "hint": "开启后，/wr 生成的文章在群聊里无论字数多少都会用折叠转发形式发送。",
     "default": true
-  },
-  "forward_node_name": {
-    "description": "合并转发节点名称",
-    "type": "string",
-    "hint": "群聊合并转发消息里显示的发送者名称。",
-    "default": "长文写作助手"
   }
 }

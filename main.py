@@ -18,9 +18,9 @@ MAX_CACHE_SIZE = 100
 
 @register(
     "long_writer",
-    "YourName",
+    "菌菌",
     "使用独立写作模型生成长文章，支持 wr+字数 指令和群聊合并转发输出",
-    "1.1.0",
+    "2.1.0",
     ""
 )
 class LongWriterPlugin(Star):
@@ -486,13 +486,37 @@ class LongWriterPlugin(Star):
         name = await self._get_display_name(event)
         return f"——给【{name}】的文章——\n{article.strip()}"
 
-    def _build_forward_chain(self, event: AstrMessageEvent, text: str):
+    async def _get_bot_display_name(self, event: AstrMessageEvent) -> str:
+        bot_uin = str(getattr(event.message_obj, "self_id", "") or "0")
+
+        for attr in ("self_name", "bot_name"):
+            value = str(getattr(event.message_obj, attr, "") or "").strip()
+            if value:
+                return value
+
+        bot = self._get_aiocqhttp_bot(event)
+        if bot:
+            try:
+                result = await bot.api.call_action("get_login_info")
+                data = self._normalize_action_data(result)
+                nickname = str(data.get("nickname", "") or "").strip()
+                if nickname:
+                    return nickname
+                user_id = str(data.get("user_id", "") or "").strip()
+                if user_id:
+                    return user_id
+            except Exception as e:
+                logger.warning(f"[LongWriter] 读取 bot 昵称失败: {e}")
+
+        return bot_uin or "bot"
+
+    async def _build_forward_chain(self, event: AstrMessageEvent, text: str):
         """
         构建合并转发消息链。
         参考 AstrBot 官方文档：yield event.chain_result([node])
         """
         bot_uin = str(getattr(event.message_obj, "self_id", "") or "0")
-        node_name = str(self.config.get("forward_node_name", "长文写作助手")).strip() or "长文写作助手"
+        node_name = await self._get_bot_display_name(event)
         node = Comp.Node(
             uin=bot_uin,
             name=node_name,
@@ -535,7 +559,7 @@ class LongWriterPlugin(Star):
         final_text = await self._build_article_text(event, article)
 
         if self._get_group_id(event) and bool(self.config.get("always_forward_in_group", True)):
-            yield self._build_forward_chain(event, final_text)
+            yield await self._build_forward_chain(event, final_text)
             return
 
         yield event.chain_result([Comp.Plain(text=final_text)])
